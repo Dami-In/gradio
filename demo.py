@@ -92,14 +92,9 @@ def save_crop_images(detection_result_list, image_path):
       # os.makedirs(foldername)
     resized.save(resized_filelist[i], format="JPEG", quality=90)
     #display_image(resized)
-x
 
 inputs = [
-  gr.inputs.Image(type="pil", label="Image1"),
-  gr.inputs.Image(type='pil', label="Image2"),
-  gr.inputs.Image(type='pil', label="Image3"),
-  gr.inputs.Image(type='pil', label="Image4")
-  #gr.inputs.CheckBox(lines=1, label="optional catego")
+  gr.inputs.Image(type="pil", label="Image1")
 ]
 
 brands = ('Burberry', 'Prada', 'Thom Browne', 'A.P.C', 'Alexander Mcqueen', 'Balenciaga', 'Chanel', 
@@ -127,11 +122,8 @@ img=('brand_images/Burberry.jpg', 'brand_images/Prada.jpg', 'brand_images/ThomBr
      'brand_images/OffWhite.jpg''brand_images/Dior.jpg','brand_images/Gucci.jpg')
 
 filename1='imageinput/image1.jpg'
-filename2='imageinput/image2.jpg'
-filename3='imageinput/image3.jpg'
-filename4='imageinput/image4.jpg'
 
-def processing(image1, image2, image3, image4):
+def processing(image1):
     filename_list=[]
     
     if not os.path.exists('imageinput'):
@@ -140,19 +132,6 @@ def processing(image1, image2, image3, image4):
     image1.save(filename1, format="JPEG", quality=90)
         
     filename_list.append(filename1)
-
-    image2.save(filename2, format="JPEG", quality=90)
-        
-    filename_list.append(filename2)
-
-    image3.save(filename3, format="JPEG", quality=90)
-        
-    filename_list.append(filename3)
-    
-    image4.save(filename4, format="JPEG", quality=90)
-        
-    filename_list.append(filename4)
-
 
   result_list=run_detector(detector, filename_list)
   save_crop_images(result_list, filename_list)
@@ -166,8 +145,7 @@ def processing(image1, image2, image3, image4):
     image_tensor = image_tensor.unsqueeze(0)
     input = Variable(image_tensor)
     input = input.to('cpu')
-    output = model(input)
-    index += output
+    index = model(input)
 
   idx=(index.argmax(dim=1)).int()
   
