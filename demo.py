@@ -133,23 +133,23 @@ def processing(image1):
         
     filename_list.append(filename1)
 
-  result_list=run_detector(detector, filename_list)
-  save_crop_images(result_list, filename_list)
-  cropped_images=[]
-  test_transforms = transforms.Compose([transforms.ToTensor(),
-     transforms.Normalize((0.480, 0.437, 0.425), (0.257, 0.247, 0.245))])
+    result_list=run_detector(detector, filename_list)
+    save_crop_images(result_list, filename_list)
+    cropped_images=[]
+    test_transforms = transforms.Compose([transforms.ToTensor(),
+                                          transforms.Normalize((0.480, 0.437, 0.425), (0.257, 0.247, 0.245))])
   
-  for resized in resized_filelist:
-    imgopen=Image.open(resized) 
-    image_tensor = test_transforms(imgopen).float()
-    image_tensor = image_tensor.unsqueeze(0)
-    input = Variable(image_tensor)
-    input = input.to('cpu')
-    index = model(input)
+    for resized in resized_filelist:
+        imgopen=Image.open(resized) 
+        image_tensor = test_transforms(imgopen).float()
+        image_tensor = image_tensor.unsqueeze(0)
+        input = Variable(image_tensor)
+        input = input.to('cpu')
+        index = model(input)
 
-  idx=(index.argmax(dim=1)).int()
+    idx=(index.argmax(dim=1)).int()
   
-  return Image.open(img[idx]), brands[idx], introductions[idx]
+    return Image.open(img[idx]), brands[idx], introductions[idx]
 
 outputs = [gr.outputs.Image(), gr.outputs.Textbox(), gr.outputs.Textbox()]
 
