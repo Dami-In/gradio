@@ -82,14 +82,20 @@ def save_crop_images(detection_result_list, image_path):
             ymin_r, xmin_r, ymax_r, xmax_r = ymin, xmin, ymax, xmax
             max_area = area
 
-    cropped_img = img.crop((xmin_r, ymin_r, xmax_r, ymax_r))
+    height = ymax_r-ymin_r
+    width = xmax_r-xmin_r
+    hwdiff2 = (height-width)/2
+    if ((xmin_r-hwdiff2)<0): x1 = 0
+    else: x1 = xmin_r-hwdiff2
+    if ((xmax_r+hwdiff2)>im_width): x2 = im_width
+    else: x2 = xmax_r+hwdiff2
+    cropped_img = img.crop((x1, ymin_r, x2, ymax_r))
+    if (x2 - x1) < (ymax_r - ymin_r):
+      diff = (ymax_r - ymin_r) - (x2 - x1)
+      padding = (int(diff//2), 0, int(diff-diff//2), 0)
+      cropped_img = ImageOps.expand(cropped_img, padding)
+
     resized = ImageOps.fit(cropped_img, (128, 384), Image.ANTIALIAS)
-    # newfp = downloaded_image_list[i].replace('jpeg_files', 'cropped_files') #####
-    # fplist = newfp.split('/')
-    # fplist = fplist[:-1]
-    # foldername = '/'.join(fplist)
-    # if not os.path.exists(foldername):
-      # os.makedirs(foldername)
     resized.save(resized_filelist[i], format="JPEG", quality=90)
     #display_image(resized)
 
