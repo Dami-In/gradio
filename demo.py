@@ -60,7 +60,7 @@ def run_detector(detector, downloaded_image_list):
 
   return result_list
 
-resized_filelist=['imageinput/resized1.jpg']
+resized_filelist=[]
 
 def save_crop_images(detection_result_list, image_path):
   ymin_r, xmin_r, ymax_r, xmax_r = 0, 0, 1, 1
