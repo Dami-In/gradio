@@ -150,7 +150,7 @@ def processing(image1):
         image_tensor = test_transforms(imgopen).float()
         image_tensor = image_tensor.unsqueeze(0)
         inp = tf.Variable(image_tensor)
-        inp = inputt.to('cpu')
+        inp = inp.to('cpu')
         index = model(inp)
 
     idx=(index.argmax(dim=1)).int()
